@@ -28,7 +28,8 @@ import (
 
 var (
 	cfgFile, kubeCfgFile string
-	config               *rest.Config
+
+	kubeConfig *rest.Config
 )
 
 // rootCmd represents the base command when called without any subcommands
@@ -111,17 +112,17 @@ func initKubeCfgFile() {
 	}
 	kubeCfgFile = filepath.Join(home, ".kube", "config")
 
-	if config, err = clientcmd.BuildConfigFromFlags("", kubeCfgFile); err != nil {
+	if kubeConfig, err = clientcmd.BuildConfigFromFlags("", kubeCfgFile); err != nil {
 		fmt.Fprintln(os.Stderr, err)
 		os.Exit(1)
 	}
 }
 
 func initKubeConfig() {
-	conf, err := clientcmd.BuildConfigFromFlags("", kubeCfgFile)
+	c, err := clientcmd.BuildConfigFromFlags("", kubeCfgFile)
 	if err != nil {
 		fmt.Fprintln(os.Stderr, err)
 		os.Exit(1)
 	}
-	config = conf
+	kubeConfig = c
 }

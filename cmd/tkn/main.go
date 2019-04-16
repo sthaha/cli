@@ -14,7 +14,7 @@
 
 package main
 
-import "github.com/openshift/tektoncd-pipeline-client/pkg/cmd"
+import "github.com/openshift/tektoncd-client/pkg/cmd"
 
 func main() {
 	cmd.Execute()

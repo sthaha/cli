@@ -1,29 +1,46 @@
-module github.com/openshift/tektoncd-pipeline-client
+module github.com/openshift/tektoncd-client
 
 go 1.12
 
 require (
-	github.com/gogo/protobuf v1.2.1 // indirect
-	github.com/golang/glog v0.0.0-20160126235308-23def4e6c14b // indirect
+	contrib.go.opencensus.io/exporter/ocagent v0.4.12 // indirect
+	github.com/Azure/azure-sdk-for-go v27.1.0+incompatible // indirect
+	github.com/Azure/go-autorest v11.7.1+incompatible // indirect
+	github.com/aws/aws-sdk-go v1.19.11 // indirect
+	github.com/dgrijalva/jwt-go v3.2.0+incompatible // indirect
+	github.com/evanphx/json-patch v4.1.0+incompatible // indirect
+	github.com/golang/groupcache v0.0.0-20190129154638-5b532d6fd5ef // indirect
+	github.com/google/btree v1.0.0 // indirect
+	github.com/google/go-containerregistry v0.0.0-20190412005658-1d38b9cfdb9d // indirect
 	github.com/google/gofuzz v1.0.0 // indirect
+	github.com/googleapis/gnostic v0.2.0 // indirect
+	github.com/gregjones/httpcache v0.0.0-20190212212710-3befbb6ad0cc // indirect
 	github.com/imdario/mergo v0.3.7 // indirect
+	github.com/inconshreveable/mousetrap v1.0.0 // indirect
 	github.com/json-iterator/go v1.1.6 // indirect
+	github.com/knative/pkg v0.0.0-20190321174848-60fdcbcabd2f // indirect
+	github.com/markbates/inflect v1.0.4 // indirect
+	github.com/mattbaird/jsonpatch v0.0.0-20171005235357-81af80346b1a // indirect
 	github.com/mitchellh/go-homedir v1.1.0
 	github.com/modern-go/concurrent v0.0.0-20180306012644-bacd9c7ef1dd // indirect
-	github.com/modern-go/reflect2 v1.0.1 // indirect
+	github.com/modern-go/reflect2 v0.0.0-20180701023420-4b7aa43c6742 // indirect
+	github.com/onsi/ginkgo v1.8.0 // indirect
+	github.com/onsi/gomega v1.5.0 // indirect
+	github.com/peterbourgon/diskv v2.0.1+incompatible // indirect
 	github.com/spf13/cobra v0.0.3
 	github.com/spf13/viper v1.3.2
-	golang.org/x/net v0.0.0-20190415214537-1da14a5a36f2 // indirect
-	golang.org/x/oauth2 v0.0.0-20190402181905-9f3314589c9a // indirect
-	golang.org/x/time v0.0.0-20190308202827-9d24e82272b4 // indirect
+	github.com/tektoncd/pipeline v0.2.0
+	go.uber.org/atomic v1.3.2 // indirect
+	go.uber.org/multierr v1.1.0 // indirect
+	go.uber.org/zap v1.9.1 // indirect
+	golang.org/x/net v0.0.0-20190322120337-addf6b3196f6 // indirect
+	golang.org/x/time v0.0.0-20180314180208-26559e0f760e // indirect
 	gopkg.in/inf.v0 v0.9.1 // indirect
-
-	k8s.io/api v0.0.0-20181221193117-173ce66c1e39
-	k8s.io/apimachinery v0.0.0-20190104073114-849b284f3b75
-	k8s.io/cli-runtime v0.0.0-20190107235426-31214e12222d
-	k8s.io/client-go v2.0.0-alpha.0.0.20181015214059-cbd9965a0e71+incompatible
-	k8s.io/klog v0.1.0 // indirect
-	k8s.io/kube-openapi v0.0.0-20181114233023-0317810137be // indirect
-	sigs.k8s.io/kustomize v1.0.11 // indirect
-	sigs.k8s.io/yaml v1.1.0
+	k8s.io/api v0.0.0-20190226173710-145d52631d00 // indirect
+	k8s.io/apimachinery v0.0.0-20190221084156-01f179d85dbc // indirect
+	k8s.io/client-go v0.0.0-20190226174127-78295b709ec6
+	k8s.io/klog v0.2.0 // indirect
+	k8s.io/kube-openapi v0.0.0-20171101183504-39a7bf85c140 // indirect
+	k8s.io/kubernetes v1.13.3 // indirect
+	sigs.k8s.io/yaml v1.1.0 // indirect
 )
