@@ -19,7 +19,7 @@ import (
 
 	"github.com/spf13/cobra"
 	"github.com/tektoncd/pipeline/pkg/client/clientset/versioned"
-	"github.com/tektoncd/pipeline/pkg/client/clientset/versioned/typed/pipeline/v1alpha1"
+	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 // listCmd represents the list command
@@ -35,29 +35,24 @@ to quickly create a Cobra application.`,
 	RunE: run,
 }
 
-type clients struct {
-	PipelineClient v1alpha1.PipelineInterface
-	//TaskClient             v1alpha1.TaskInterface
-	//TaskRunClient          v1alpha1.TaskRunInterface
-	//PipelineRunClient      v1alpha1.PipelineRunInterface
-	//PipelineResourceClient v1alpha1.PipelineResourceInterface
-}
-
 func run(cmd *cobra.Command, args []string) error {
 	var err error
-	c := &clients{}
 
 	cs, err := versioned.NewForConfig(kubeConfig)
 	if err != nil {
 		fmt.Printf("failed to create client from config %s  %s", kubeCfgFile, err)
 		return err
 	}
-	ns := "test"
-	c.PipelineClient = cs.TektonV1alpha1().Pipelines(ns)
-	//c.TaskClient = cs.TektonV1alpha1().Tasks(namespace)
-	//c.TaskRunClient = cs.TektonV1alpha1().TaskRuns(namespace)
-	//c.PipelineRunClient = cs.TektonV1alpha1().PipelineRuns(namespace)
-	//c.PipelineResourceClient = cs.TektonV1alpha1().PipelineResources(namespace)
+	c := cs.TektonV1alpha1().Pipelines(namespace)
+	ps, err := c.List(v1.ListOptions{})
+	if err != nil {
+		fmt.Printf("failed to list pipelines from namespace %s  %s", namespace, err)
+		return err
+	}
+
+	for _, v := range ps.Items {
+		fmt.Printf(v.Name)
+	}
 	return nil
 }
 
@@ -66,11 +61,4 @@ func init() {
 
 	// Here you will define your flags and configuration settings.
 
-	// Cobra supports Persistent Flags which will work for this command
-	// and all subcommands, e.g.:
-	// listCmd.PersistentFlags().String("foo", "", "A help for foo")
-
-	// Cobra supports local flags which will only run when this command
-	// is called directly, e.g.:
-	// listCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 }
