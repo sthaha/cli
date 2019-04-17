@@ -25,21 +25,21 @@ import (
 	cli "k8s.io/cli-runtime/pkg/genericclioptions"
 )
 
-// pipelineList encapsulates all things related to pipelines list command
-type pipelineList struct {
+// pipelineListCmd holds everything related to "pipelines list"" to
+// namespace all package variables
+var pipelineListCmd = struct {
+	valid    bool
 	cmd      *cobra.Command
 	cliFlags *genericclioptions.PrintFlags
-}
-
-var listCmd *pipelineList
+}{}
 
 func init() {
-	pipelinesCmd.AddCommand(ListCmd())
+	pipelinesCmd.AddCommand(pipelineList())
 }
 
-func ListCmd() *cobra.Command {
-	if listCmd != nil {
-		return listCmd.cmd
+func pipelineList() *cobra.Command {
+	if pipelineListCmd.valid {
+		return pipelineListCmd.cmd
 	}
 
 	c := &cobra.Command{
@@ -58,8 +58,12 @@ func ListCmd() *cobra.Command {
 	defaultOutput := `jsonpath={range .items[*]}{.metadata.name}{"\n"}{end}`
 	f := cli.NewPrintFlags("").WithDefaultOutput(defaultOutput)
 	f.AddFlags(c)
-	listCmd = &pipelineList{cmd: c, cliFlags: f}
-	return listCmd.cmd
+
+	pipelineListCmd.cmd = c
+	pipelineListCmd.cliFlags = f
+	pipelineListCmd.valid = true
+
+	return pipelineListCmd.cmd
 }
 
 func run(cmd *cobra.Command, args []string) error {
@@ -76,7 +80,7 @@ func run(cmd *cobra.Command, args []string) error {
 		fmt.Fprintf(os.Stderr, "failed to list pipelines from namespace %s  %s", namespace, err)
 		return err
 	}
-	printer, err := listCmd.cliFlags.ToPrinter()
+	printer, err := pipelineListCmd.cliFlags.ToPrinter()
 	if err != nil {
 		return err
 	}
