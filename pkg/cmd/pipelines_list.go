@@ -16,6 +16,7 @@ package cmd
 
 import (
 	"fmt"
+	"os"
 
 	"github.com/spf13/cobra"
 	"github.com/tektoncd/pipeline/pkg/client/clientset/versioned"
@@ -54,7 +55,7 @@ func ListCmd() *cobra.Command {
 		RunE: run,
 	}
 
-	defaultOutput = `jsonpath={range .items[*]}{.metadata.name}{"\n"}{end}`
+	defaultOutput := `jsonpath={range .items[*]}{.metadata.name}{"\n"}{end}`
 	f := cli.NewPrintFlags("").WithDefaultOutput(defaultOutput)
 	f.AddFlags(c)
 	listCmd = &pipelineList{cmd: c, cliFlags: f}
@@ -66,13 +67,13 @@ func run(cmd *cobra.Command, args []string) error {
 
 	cs, err := versioned.NewForConfig(kubeConfig)
 	if err != nil {
-		fmt.Printf("failed to create client from config %s  %s", kubeCfgFile, err)
+		fmt.Fprintf(os.Stderr, "failed to create client from config %s  %s", kubeCfgFile, err)
 		return err
 	}
 	c := cs.TektonV1alpha1().Pipelines(namespace)
 	ps, err := c.List(v1.ListOptions{})
 	if err != nil {
-		fmt.Printf("failed to list pipelines from namespace %s  %s", namespace, err)
+		fmt.Fprintf(os.Stderr, "failed to list pipelines from namespace %s  %s", namespace, err)
 		return err
 	}
 	printer, err := listCmd.cliFlags.ToPrinter()
