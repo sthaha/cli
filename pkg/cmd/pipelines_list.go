@@ -28,7 +28,6 @@ import (
 // pipelineListCmd holds everything related to "pipelines list"" to
 // namespace all package variables
 var pipelineListCmd = struct {
-	valid    bool
 	cmd      *cobra.Command
 	cliFlags *genericclioptions.PrintFlags
 }{}
@@ -38,7 +37,7 @@ func init() {
 }
 
 func pipelineList() *cobra.Command {
-	if pipelineListCmd.valid {
+	if pipelineListCmd.cmd != nil {
 		return pipelineListCmd.cmd
 	}
 
@@ -61,7 +60,6 @@ func pipelineList() *cobra.Command {
 
 	pipelineListCmd.cmd = c
 	pipelineListCmd.cliFlags = f
-	pipelineListCmd.valid = true
 
 	return pipelineListCmd.cmd
 }
