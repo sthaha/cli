@@ -92,7 +92,7 @@ func initConfig() {
 
 	// If a config file is found, read it in.
 	if err := viper.ReadInConfig(); err == nil {
-		fmt.Println("Using config file:", viper.ConfigFileUsed())
+		fmt.Fprintln(os.Stderr, "Using config file:", viper.ConfigFileUsed())
 	}
 }
 
@@ -120,7 +120,7 @@ func initKubeCfgFile() {
 }
 
 func initKubeConfig() {
-	fmt.Println("Using kubeconfig file:", kubeCfgFile)
+	fmt.Fprintln(os.Stderr, "Using kubeconfig file:", kubeCfgFile)
 	c, err := clientcmd.BuildConfigFromFlags("", kubeCfgFile)
 	if err != nil {
 		fmt.Fprintln(os.Stderr, err)
