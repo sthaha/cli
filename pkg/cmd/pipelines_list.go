@@ -20,20 +20,45 @@ import (
 	"github.com/spf13/cobra"
 	"github.com/tektoncd/pipeline/pkg/client/clientset/versioned"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	"k8s.io/cli-runtime/pkg/genericclioptions"
+	cli "k8s.io/cli-runtime/pkg/genericclioptions"
 )
 
-// listCmd represents the list command
-var listCmd = &cobra.Command{
-	Use:     "list",
-	Aliases: []string{"ls"},
-	Short:   "A brief description of your command",
-	Long: `A longer description that spans multiple lines and likely contains examples
-and usage of using your command. For example:
+// pipelineList encapsulates all things related to pipelines list command
+type pipelineList struct {
+	cmd      *cobra.Command
+	cliFlags *genericclioptions.PrintFlags
+}
 
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
-	RunE: run,
+var listCmd *pipelineList
+
+func init() {
+	pipelinesCmd.AddCommand(ListCmd())
+}
+
+func ListCmd() *cobra.Command {
+	if listCmd != nil {
+		return listCmd.cmd
+	}
+
+	c := &cobra.Command{
+		Use:     "list",
+		Aliases: []string{"ls"},
+		Short:   "A brief description of your command",
+		Long: `A longer description that spans multiple lines and likely contains examples
+	and usage of using your command. For example:
+
+	Cobra is a CLI library for Go that empowers applications.
+	This application is a tool to generate the needed files
+	to quickly create a Cobra application.`,
+		RunE: run,
+	}
+
+	defaultOutput = `jsonpath={range .items[*]}{.metadata.name}{"\n"}{end}`
+	f := cli.NewPrintFlags("").WithDefaultOutput(defaultOutput)
+	f.AddFlags(c)
+	listCmd = &pipelineList{cmd: c, cliFlags: f}
+	return listCmd.cmd
 }
 
 func run(cmd *cobra.Command, args []string) error {
@@ -50,16 +75,9 @@ func run(cmd *cobra.Command, args []string) error {
 		fmt.Printf("failed to list pipelines from namespace %s  %s", namespace, err)
 		return err
 	}
-
-	for _, v := range ps.Items {
-		fmt.Printf(v.Name)
+	printer, err := listCmd.cliFlags.ToPrinter()
+	if err != nil {
+		return err
 	}
-	return nil
-}
-
-func init() {
-	pipelinesCmd.AddCommand(listCmd)
-
-	// Here you will define your flags and configuration settings.
-
+	return printer.PrintObj(ps, cmd.OutOrStdout())
 }
