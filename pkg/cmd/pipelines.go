@@ -24,7 +24,9 @@ var (
 
 // pipelinesCmd represents the pipelines command
 var pipelinesCmd = &cobra.Command{
-	Use:   "pipelines",
+	Use:     "pipelines",
+	Aliases: []string{"p"},
+
 	Short: "Handles pipelines",
 	Long:  `add long description`, // TODO(sthaha)
 }
