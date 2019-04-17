@@ -63,10 +63,11 @@ func init() {
 	// will be global for your application.
 	rootCmd.PersistentFlags().StringVarP(
 		&cfgFile, "config", "c",
-		"", "config file (default is $HOME/.tekton.yaml)")
+		"", "config file (default: $HOME/.tekton.yaml)")
 	rootCmd.PersistentFlags().StringVarP(
 		&kubeCfgFile, "kubeconfig", "k",
-		"", "kubectl config file (default is $HOME/.kube/config)")
+		"", "kubectl config file (default: $HOME/.kube/config)")
+
 }
 
 // initConfig reads in config file and ENV variables if set.
@@ -119,6 +120,7 @@ func initKubeCfgFile() {
 }
 
 func initKubeConfig() {
+	fmt.Println("Using kubeconfig file:", kubeCfgFile)
 	c, err := clientcmd.BuildConfigFromFlags("", kubeCfgFile)
 	if err != nil {
 		fmt.Fprintln(os.Stderr, err)
