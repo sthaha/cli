@@ -1,4 +1,4 @@
-module github.com/openshift/tektoncd-client
+module github.com/tektoncd/cli
 
 go 1.12
 
