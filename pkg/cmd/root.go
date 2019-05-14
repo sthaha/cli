@@ -30,6 +30,8 @@ func Root(p cli.Params) *cobra.Command {
 		Short: "CLI for tekton pipelines",
 		Long: `
 	`,
+		SilenceUsage:  true,
+		SilenceErrors: true,
 	}
 
 	cmd.AddCommand(
