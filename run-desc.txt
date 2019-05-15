@@ -1,0 +1,126 @@
+Name:         output-pipeline-run-5
+Namespace:    test-tekton
+Labels:       tekton.dev/pipeline=output-pipeline
+Annotations:  kubectl.kubernetes.io/last-applied-configuration:
+                {"apiVersion":"tekton.dev/v1alpha1","kind":"PipelineRun","metadata":{"annotations":{},"name":"output-pipeline-run-5","namespace":"test-tek...
+API Version:  tekton.dev/v1alpha1
+Kind:         PipelineRun
+Metadata:
+  Creation Timestamp:  2019-05-08T15:28:51Z
+  Generation:          1
+  Resource Version:    1882231
+  Self Link:           /apis/tekton.dev/v1alpha1/namespaces/test-tekton/pipelineruns/output-pipeline-run-5
+  UID:                 fb6c11d8-71a5-11e9-9c71-58bfb73af7d4
+Spec:
+  Pipeline Ref:
+    Name:  output-pipeline
+  Resources:
+    Name:  source-repo
+    Resource Ref:
+      Name:         skaffold-git
+  Service Account:  default
+  Trigger:
+    Type:  manual
+Status:
+  Completion Time:  2019-05-08T15:29:18Z
+  Conditions:
+    Last Transition Time:  2019-05-08T15:29:18Z
+    Message:               All Tasks have completed executing
+    Reason:                Succeeded
+    Status:                True
+    Type:                  Succeeded
+  Start Time:              2019-05-08T15:28:51Z
+  Task Runs:
+    Output - Pipeline - Run - 5 - First - Create - File - Jnxfp:
+      Pipeline Task Name:  first-create-file
+      Status:
+        Completion Time:  2019-05-08T15:29:08Z
+        Conditions:
+          Last Transition Time:  2019-05-08T15:29:08Z
+          Status:                True
+          Type:                  Succeeded
+        Pod Name:                output-pipeline-run-5-first-create-file-jnxfp-pod-1650d2
+        Start Time:              2019-05-08T15:28:51Z
+        Steps:
+          Name:  git-source-skaffold-git-d86tt
+          Terminated:
+            Container ID:  docker://5b6f58e9bd9b7c81ac9f3381ca806d29231b5aac9b5698597a7a6beba93a298a
+            Exit Code:     0
+            Finished At:   2019-05-08T15:29:01Z
+            Reason:        Completed
+            Started At:    2019-05-08T15:28:54Z
+          Name:            read-docs-old
+          Terminated:
+            Container ID:  docker://1d38f053335461972e157b2d1ebbe039a63f8ef7c1d72e0d0cb41777b92b3ec6
+            Exit Code:     0
+            Finished At:   2019-05-08T15:29:02Z
+            Reason:        Completed
+            Started At:    2019-05-08T15:29:01Z
+          Name:            source-copy-skaffold-git-stmn4
+          Terminated:
+            Container ID:  docker://195b8d0e935a92d2e2f13ebe83cfbc89d0e147e54809fd81f8ca2730e9cea27f
+            Exit Code:     0
+            Finished At:   2019-05-08T15:29:07Z
+            Reason:        Completed
+            Started At:    2019-05-08T15:29:06Z
+          Name:            source-mkdir-skaffold-git-6qwp9
+          Terminated:
+            Container ID:  docker://8b8e469a17a8f07f81e678cf9ff0792f6c8895c9755946b10d8b7cd72119fc92
+            Exit Code:     0
+            Finished At:   2019-05-08T15:29:06Z
+            Reason:        Completed
+            Started At:    2019-05-08T15:29:06Z
+          Name:            write-new-stuff
+          Terminated:
+            Container ID:  docker://81c7931e28a4ee3a5b9aa46ce3d66754e42d61b748d97b65c73ef9c8b69cd429
+            Exit Code:     0
+            Finished At:   2019-05-08T15:29:05Z
+            Reason:        Completed
+            Started At:    2019-05-08T15:29:05Z
+          Name:            nop
+          Terminated:
+            Container ID:  docker://9e508a7f208d557eb6d35d8be51b4b9e7cebb0fa7f4b0d9385eb7e5f24dd2640
+            Exit Code:     0
+            Finished At:   2019-05-08T15:29:07Z
+            Reason:        Completed
+            Started At:    2019-05-08T15:29:07Z
+    Output - Pipeline - Run - 5 - Then - Check - Gfj 2 F:
+      Pipeline Task Name:  then-check
+      Status:
+        Completion Time:  2019-05-08T15:29:18Z
+        Conditions:
+          Last Transition Time:  2019-05-08T15:29:18Z
+          Status:                True
+          Type:                  Succeeded
+        Pod Name:                output-pipeline-run-5-then-check-gfj2f-pod-a31224
+        Start Time:              2019-05-08T15:29:08Z
+        Steps:
+          Name:  create-dir-workspace-bvp88
+          Terminated:
+            Container ID:  docker://78803377749ea61c4c4d42fb85a9118d16989d1a2de6e6f4e06898b1b2b9fce1
+            Exit Code:     0
+            Finished At:   2019-05-08T15:29:12Z
+            Reason:        Completed
+            Started At:    2019-05-08T15:29:12Z
+          Name:            read
+          Terminated:
+            Container ID:  docker://243cdc7143b6df4ce8881518d3f620e168cfd3f87d3a6161a2e227b5f92a58dd
+            Exit Code:     0
+            Finished At:   2019-05-08T15:29:17Z
+            Reason:        Completed
+            Started At:    2019-05-08T15:29:17Z
+          Name:            source-copy-workspace-sz95v
+          Terminated:
+            Container ID:  docker://0f7948f88422b55eef5c5eb7d12da18d91a31f08d35d90a1e6e788eee488bcbb
+            Exit Code:     0
+            Finished At:   2019-05-08T15:29:13Z
+            Reason:        Completed
+            Started At:    2019-05-08T15:29:12Z
+          Name:            nop
+          Terminated:
+            Container ID:  docker://4b3e782d38b1e3ac5e274b2e3313f90b516956b3a52efc807a553ec8f943bb54
+            Exit Code:     0
+            Finished At:   2019-05-08T15:29:17Z
+            Reason:        Completed
+            Started At:    2019-05-08T15:29:17Z
+Events:                    <none>
