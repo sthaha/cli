@@ -15,8 +15,6 @@
 package pipelinerun
 
 import (
-	"fmt"
-
 	"github.com/spf13/cobra"
 	"github.com/tektoncd/cli/pkg/cli"
 	"github.com/tektoncd/cli/pkg/flags"
@@ -31,13 +29,7 @@ func Command(p cli.Params) *cobra.Command {
 		PersistentPreRunE: func(cmd *cobra.Command, args []string) error {
 			return flags.InitParams(p, cmd)
 		},
-		RunE: func(cmd *cobra.Command, args []string) error {
-			if len(args) == 0 {
-				return fmt.Errorf("pipelinerun requires a subcommand; see help and examples")
-			}
-
-			return nil
-		},
+		Args: cobra.MinimumNArgs(1),
 	}
 
 	flags.AddTektonOptions(c)
