@@ -52,7 +52,6 @@ tkn pipelinerun -n bar describe run-name
 				fmt.Fprintf(cmd.OutOrStderr(), "Failed to find pipelinerun %q \n", runName)
 				return err
 			}
-			// print pipelinerun
 
 			fmt.Fprintf(cmd.OutOrStdout(), "Got pipelinerun: %s", pr.Name)
 			return nil
