@@ -110,9 +110,9 @@ func TestLog_valid_taskrun_logs(t *testing.T) {
 	)
 
 	cs, _ := test.SeedTestData(test.Data{TaskRuns: trs, Pods: pods})
-	tr := fakeTaskRunLogs(trName, ns, cs)
+	tr := fakeLogs(trName, ns, cs)
 
-	output := fetchLogs(logOpts(false), tr, logs.FakeLogFetcher(cs.Kube, fakeLogStream))
+	output := fetchLogs(LogOptions{}, tr, logs.FakeLogFetcher(cs.Kube, fakeLogStream))
 	expectedLogs := []string{
 		"[output-task : writefile-step] written a file",
 		"[output-task : nop] Build successful",
@@ -223,8 +223,9 @@ func TestLog_taskrun_logs(t *testing.T) {
 		t.Run(s.name, func(t *testing.T) {
 			cs, _ := test.SeedTestData(test.Data{TaskRuns: trs, Pods: pods})
 
-			trl := fakeTaskRunLogs(trName, ns, cs)
-			output := fetchLogs(logOpts(s.allSteps), trl, logs.FakeLogFetcher(cs.Kube, fakeLogStream))
+			trl := fakeLogs(trName, ns, cs)
+			opts := LogOptions{AllSteps: s.allSteps}
+			output := fetchLogs(opts, trl, logs.FakeLogFetcher(cs.Kube, fakeLogStream))
 			expected := strings.Join(s.expectedLogs, "\n") + "\n"
 
 			if d := cmp.Diff(output, expected); d != "" {
@@ -234,14 +235,8 @@ func TestLog_taskrun_logs(t *testing.T) {
 	}
 }
 
-func logOpts(allSteps bool) LogOptions {
-	return LogOptions{
-		AllSteps: allSteps,
-	}
-}
-
-func fakeTaskRunLogs(run string, ns string, cs test.Clients) *TaskRunLogs {
-	return &TaskRunLogs{
+func fakeLogs(run, ns string, cs test.Clients) *Logs {
+	return &Logs{
 		Run: run,
 		Ns:  ns,
 		Clients: &cli.Clients{
@@ -251,7 +246,7 @@ func fakeTaskRunLogs(run string, ns string, cs test.Clients) *TaskRunLogs {
 	}
 }
 
-func fetchLogs(opt LogOptions, trl *TaskRunLogs, fetcher *logs.LogFetcher) string {
+func fetchLogs(opt LogOptions, trl *Logs, fetcher *logs.LogFetcher) string {
 	out := new(bytes.Buffer)
 	trl.Fetch(opt, logs.Streams{Out: out, Err: out}, fetcher)
 	return out.String()

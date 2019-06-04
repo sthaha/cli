@@ -30,13 +30,16 @@ const (
 	msgTRNotFoundErr = "Error in retrieving Taskrun"
 )
 
-type TaskRunLogs struct {
+// Logs fetches logs of a taskrun
+type Logs struct {
 	Task    string
 	Run     string
 	Ns      string
 	Clients *cli.Clients
 }
 
+// LogOptions provides options on what logs to fetch. An empty LogOptions
+// implies fetching all logs including init steps
 type LogOptions struct {
 	AllSteps bool
 }
@@ -44,9 +47,10 @@ type LogOptions struct {
 func logCommand(p cli.Params) *cobra.Command {
 	opts := LogOptions{}
 	eg := `
-# show the logs of TaskRun named "foo" from the namesspace "bar"
+# show the logs of TaskRun named "foo" from the namespace "bar"
 tkn taskrun logs foo -n bar
-	 `
+`
+
 	c := &cobra.Command{
 		Use:          "logs",
 		Short:        "Show taskruns logs",
@@ -60,7 +64,7 @@ tkn taskrun logs foo -n bar
 				return err
 			}
 
-			trl := &TaskRunLogs{
+			trl := &Logs{
 				Run:     args[0],
 				Ns:      p.Namespace(),
 				Clients: cs,
@@ -76,26 +80,28 @@ tkn taskrun logs foo -n bar
 		},
 	}
 
-	c.Flags().BoolVarP(&opts.AllSteps, "all", "a", false, "show all logs including init steps injected by tekton")
+	c.Flags().BoolVarP(
+		&opts.AllSteps,
+		"all", "a", false,
+		"show all logs including init steps injected by tekton")
 	return c
 }
 
 //Fetch To fetch the TaskRun's logs.
 //Stream provides output and error stream to print the logs and error messages.
 //LogOptions provide way to print all(init) steps
-func (trl *TaskRunLogs) Fetch(flags LogOptions, stream logs.Streams, reader *logs.LogFetcher) {
+func (trl *Logs) Fetch(opts LogOptions, stream logs.Streams, reader *logs.LogFetcher) {
 	var (
 		kube   = trl.Clients.Kube
 		tekton = trl.Clients.Tekton
 	)
 
-	tr, err := tekton.TektonV1alpha1().
-		TaskRuns(trl.Ns).
-		Get(trl.Run, metav1.GetOptions{})
+	tr, err := tekton.TektonV1alpha1().TaskRuns(trl.Ns).Get(trl.Run, metav1.GetOptions{})
 	if err != nil {
 		fmt.Fprintf(stream.Err, "%s : %s \n", msgTRNotFoundErr, err)
 		return
 	}
+
 	trl.Task = tr.Spec.TaskRef.Name
 	trStatus := tr.Status
 	if !taskRunHasStarted(trStatus) {
@@ -116,7 +122,7 @@ func (trl *TaskRunLogs) Fetch(flags LogOptions, stream logs.Streams, reader *log
 		return
 	}
 
-	steps := filterSteps(trStatus, pod, flags.AllSteps)
+	steps := filterSteps(trStatus, pod, opts.AllSteps)
 
 	for _, step := range steps {
 		if !stepHasStarted(step) {
